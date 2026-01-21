@@ -1,120 +1,196 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proyecto</title>
-  <link rel="stylesheet" href="style1.css">
+<meta charset="utf-8">
+
+<style>
+  body {
+    background: black;
+    color: #00ff00;
+    font-family: monospace;
+    padding: 20px;
+  }
+
+  #pantallaCarga,
+  #pantallaAcceso,
+  #contenidoFinal,
+  #logo-fondo {
+    display: none;
+  }
+
+  #barra {
+    width: 0%;
+    height: 18px;
+    background: #00ff00;
+    margin-top: 10px;
+    transition: width 0.2s linear;
+  }
+
+  #log {
+    margin-top: 10px;
+    font-size: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  /* Fondo con logo */
+  #logo-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: black;
+    z-index: 1;
+  }
+
+  /* Contenido principal */
+  #contenidoFinal {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  #contenidoFinal h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  #contenidoFinal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  /* ICONO DISCORD (OCULTO AL INICIO) */
+  #discord-link {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 20;
+    display: none;
+  }
+
+  #discord-link img {
+    width: 60px;
+    transition: transform 0.2s ease;
+  }
+
+  #discord-link img:hover {
+    transform: scale(1.1);
+  }
+
+</style>
 </head>
 <body>
 
-  <!-- ===== Login Page ===== -->
-  <div class="login-page" id="login-page">
-    <div class="login-box">
-      <h2>Iniciar Sesión</h2>
-      <button id="google-login">Iniciar con Google</button>
-    </div>
-  </div>
+<div id="terminal"></div>
 
-  <!-- ===== Main Page ===== -->
-  <div class="main-page" id="main-page" style="display:none;">
-    <header>
-      <div class="logo">🌐 Proyecto</div>
-      <input type="text" class="search-bar" placeholder="Buscar...">
-      <button class="menu-btn" id="open-menu">➤</button>
-    </header>
+<div id="pantallaCarga">
+  Iniciando sistema...
+  <div id="barra"></div>
+  <div id="log"></div>
+</div>
 
-    <!-- Foro -->
-    <main>
-      <section class="foro">
-        <h2>Foro de Proyecto</h2>
-        <form id="formulario-mensaje">
-          <input type="text" id="mensaje" placeholder="Escribe un mensaje...">
-          <button type="submit">Enviar</button>
-        </form>
-        <div id="mensajes"></div>
-      </section>
-    </main>
-  </div>
+<div id="pantallaAcceso">
+  [ACCESO CONCEDIDO]<br>
+  Bienvenido al sistema principal.
+</div>
 
-  <!-- ===== Firebase + App ===== -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } 
-      from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } 
-      from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+<div id="logo-fondo"></div>
 
-    // Configuración Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDlvvtg68E7mEh71bwqX0YqWL31LTA4Q4A",
-      authDomain: "i-s-a-foro-3bf2d.firebaseapp.com",
-      projectId: "i-s-a-foro-3bf2d",
-      storageBucket: "i-s-a-foro-3bf2d.firebasestorage.app",
-      messagingSenderId: "413622307291",
-      appId: "1:413622307291:web:c6654f75ff038d0ca8bffe",
-      measurementId: "G-0HZ9B1SNWD"
-    };
+<!-- CONTENIDO CENTRAL -->
+<div id="contenidoFinal">
+  <h1>SISTEMA NØKTA ACTIVADO</h1>
+  <p>Acceso autorizado. Bienvenido al panel central.</p>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+<!-- ICONO DISCORD -->
+<a
+  id="discord-link"
+  href="https://discord.com/channels/1391436213512179722/1420796166228017273"
+  target="_blank"
+>
+  <img
+    src="https://static.vecteezy.com/system/resources/previews/023/986/880/non_2x/discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.png"
+    alt="Discord"
+  >
+</a>
 
-    // DOM
-    const loginPage = document.getElementById("login-page");
-    const mainPage = document.getElementById("main-page");
-    const googleLogin = document.getElementById("google-login");
+<script>
+let contraseña = "10310nok";
+let usuario = "nokta";
+let usu = "";
+let contra = "";
 
-    // Login con Google
-    googleLogin.addEventListener("click", async () => {
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        console.error("Error en login:", err);
-      }
-    });
+let terminal = document.getElementById("terminal");
+let pantallaCarga = document.getElementById("pantallaCarga");
+let pantallaAcceso = document.getElementById("pantallaAcceso");
+let barra = document.getElementById("barra");
+let log = document.getElementById("log");
+let logoFondo = document.getElementById("logo-fondo");
+let contenidoFinal = document.getElementById("contenidoFinal");
+let discordLink = document.getElementById("discord-link");
 
-    // Detectar sesión
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loginPage.style.display = "none";
-        mainPage.style.display = "block";
-        console.log("Bienvenido:", user.displayName);
-      } else {
-        loginPage.style.display = "flex";
-        mainPage.style.display = "none";
-      }
-    });
+/* LOGO DE FONDO (URL OPCIONAL) */
+let URL_LOGO_FONDO = "https://i.imgur.com/tuLogoDeFondo.png"; // podés cambiarla
+logoFondo.style.backgroundImage = `url('${URL_LOGO_FONDO}')`;
 
-    // ===== Firestore (mensajes) =====
-    const mensajesRef = collection(db, "mensajes");
-    const form = document.getElementById("formulario-mensaje");
-    const input = document.getElementById("mensaje");
-    const contenedor = document.getElementById("mensajes");
+const archivos = [
+  "Cargando módulo de seguridad…",
+  "Verificando integridad del sistema…",
+  "Montando partición virtual…",
+  "Obteniendo claves criptográficas…",
+  "Analizando tráfico de red…",
+  "Copiando paquete fantasma…",
+  "Iniciando protocolos internos…",
+  "Cargando paquetes…",
+  "Depurando variables…",
+  "Asignando direcciones internas…",
+  "Configurando entorno…",
+  "Ejecutando procesos restantes…"
+];
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (input.value.trim() !== "" && auth.currentUser) {
-        await addDoc(mensajesRef, {
-          texto: input.value,
-          fecha: new Date(),
-          autor: auth.currentUser.displayName
-        });
-        input.value = "";
-      }
-    });
+while (usu !== usuario || contra !== contraseña) {
+  usu = prompt("Ingrese usuario:");
+  contra = prompt("Ingrese contraseña:");
 
-    const q = query(mensajesRef, orderBy("fecha"));
-    onSnapshot(q, (snapshot) => {
-      contenedor.innerHTML = "";
-      snapshot.forEach((doc) => {
-        let p = document.createElement("p");
-        let data = doc.data();
-        p.textContent = `${data.autor || "Anónimo"}: ${data.texto}`;
-        contenedor.appendChild(p);
-      });
-    });
-  </script>
+  if (usu !== usuario || contra !== contraseña) {
+    terminal.innerHTML += "[ACCESO DENEGADO] Datos incorrectos<br>";
+  }
+}
+
+terminal.style.display = "none";
+pantallaCarga.style.display = "block";
+
+let progreso = 0;
+let index = 0;
+
+let intervalo = setInterval(function () {
+  progreso += 5;
+  barra.style.width = progreso + "%";
+
+  if (index < archivos.length) {
+    log.innerHTML += archivos[index] + "<br>";
+    index++;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  if (progreso >= 100) {
+    clearInterval(intervalo);
+
+    pantallaCarga.style.display = "none";
+    pantallaAcceso.style.display = "none";
+
+    logoFondo.style.display = "block";
+    contenidoFinal.style.display = "block";
+    discordLink.style.display = "block"; // 👈 APARECE ACÁ
+  }
+}, 350);
+</script>
+
 </body>
 </html>
