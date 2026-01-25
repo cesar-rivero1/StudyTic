@@ -8,14 +8,48 @@
     background: black;
     color: #00ff00;
     font-family: monospace;
-    padding: 20px;
+    margin: 0;
   }
 
+  /* PANTALLAS */
+  #pantallaLogin,
   #pantallaCarga,
-  #pantallaAcceso,
   #contenidoFinal,
   #logo-fondo {
     display: none;
+  }
+
+  /* LOGIN CENTRADO */
+  #pantallaLogin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+
+  input, button {
+    background: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 10px;
+    font-family: monospace;
+    margin-top: 10px;
+    width: 240px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  #errorLogin {
+    margin-top: 10px;
+  }
+
+  /* CARGA */
+  #pantallaCarga {
+    padding: 20px;
   }
 
   #barra {
@@ -33,13 +67,10 @@
     overflow-y: auto;
   }
 
-  /* Fondo con logo */
+  /* FONDO */
   #logo-fondo {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -47,7 +78,7 @@
     z-index: 1;
   }
 
-  /* Contenido principal */
+  /* CONTENIDO FINAL */
   #contenidoFinal {
     position: relative;
     z-index: 10;
@@ -55,60 +86,51 @@
     margin-top: 40px;
   }
 
-  #contenidoFinal h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-
-  #contenidoFinal p {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  /* ICONO DISCORD (OCULTO AL INICIO) */
+  /* DISCORD */
   #discord-link {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 20;
     display: none;
+    z-index: 20;
   }
 
   #discord-link img {
     width: 60px;
-    transition: transform 0.2s ease;
   }
-
-  #discord-link img:hover {
-    transform: scale(1.1);
-  }
-
 </style>
 </head>
 <body>
 
-<div id="terminal"></div>
+<!-- LOGIN -->
+<div id="pantallaLogin">
+  <h2>INICIO DE SESIÓN</h2>
 
+  <input id="inputUsuario" placeholder="Usuario">
+  <input id="inputContra" type="password" placeholder="Contraseña">
+
+  <button onclick="verificarLogin()">ACCEDER</button>
+
+  <div id="errorLogin"></div>
+</div>
+
+<!-- CARGA -->
 <div id="pantallaCarga">
   Iniciando sistema...
   <div id="barra"></div>
   <div id="log"></div>
 </div>
 
-<div id="pantallaAcceso">
-  [ACCESO CONCEDIDO]<br>
-  Bienvenido al sistema principal.
-</div>
-
+<!-- FONDO -->
 <div id="logo-fondo"></div>
 
-<!-- CONTENIDO CENTRAL -->
+<!-- CONTENIDO FINAL -->
 <div id="contenidoFinal">
-  <h1>SISTEMA StudyTic ACTIVADO</h1>
-  <p>Acceso autorizado. Bienvenido al panel central.</p>
+  <h1>SISTEMA INICIADO</h1>
+  <p>Plataforma de estudio compartida</p>
 </div>
 
-<!-- ICONO DISCORD -->
+<!-- DISCORD -->
 <a
   id="discord-link"
   href="https://discord.com/channels/1391436213512179722/1420796166228017273"
@@ -121,75 +143,74 @@
 </a>
 
 <script>
+/* CREDENCIALES */
 let contraseña = "tic2025";
 let usuario = "2025gen";
 let usu = "";
 let contra = "";
 
-let terminal = document.getElementById("terminal");
+/* ELEMENTOS */
+let pantallaLogin = document.getElementById("pantallaLogin");
 let pantallaCarga = document.getElementById("pantallaCarga");
-let pantallaAcceso = document.getElementById("pantallaAcceso");
 let barra = document.getElementById("barra");
 let log = document.getElementById("log");
-let logoFondo = document.getElementById("logo-fondo");
 let contenidoFinal = document.getElementById("contenidoFinal");
+let logoFondo = document.getElementById("logo-fondo");
 let discordLink = document.getElementById("discord-link");
+let errorLogin = document.getElementById("errorLogin");
 
-/* LOGO DE FONDO (URL OPCIONAL) */
-let URL_LOGO_FONDO = "https://i.imgur.com/tuLogoDeFondo.png"; // podés cambiarla
-logoFondo.style.backgroundImage = `url('${URL_LOGO_FONDO}')`;
+/* MOSTRAR LOGIN */
+pantallaLogin.style.display = "flex";
+
+/* LOGO DE FONDO (CAMBIABLE) */
+logoFondo.style.backgroundImage =
+  "url('https://i.imgur.com/tuLogo.png')";
 
 const archivos = [
-  "Cargando módulo de seguridad…",
-  "Verificando integridad del sistema…",
-  "Montando partición virtual…",
-  "Obteniendo claves criptográficas…",
-  "Analizando tráfico de red…",
-  "Copiando paquete fantasma…",
-  "Iniciando protocolos internos…",
-  "Cargando paquetes…",
-  "Depurando variables…",
-  "Asignando direcciones internas…",
-  "Configurando entorno…",
-  "Ejecutando procesos restantes…"
+  "Verificando credenciales…",
+  "Inicializando entorno…",
+  "Cargando módulos…",
+  "Sincronizando datos…",
+  "Sistema listo."
 ];
 
-while (usu !== usuario || contra !== contraseña) {
-  usu = prompt("Ingrese usuario:");
-  contra = prompt("Ingrese contraseña:");
+function verificarLogin() {
+  usu = document.getElementById("inputUsuario").value;
+  contra = document.getElementById("inputContra").value;
 
-  if (usu !== usuario || contra !== contraseña) {
-    terminal.innerHTML += "[ACCESO DENEGADO] Datos incorrectos<br>";
+  if (usu === usuario && contra === contraseña) {
+    pantallaLogin.style.display = "none";
+    iniciarCarga();
+  } else {
+    errorLogin.innerHTML = "[ACCESO DENEGADO]";
   }
 }
 
-terminal.style.display = "none";
-pantallaCarga.style.display = "block";
+function iniciarCarga() {
+  pantallaCarga.style.display = "block";
 
-let progreso = 0;
-let index = 0;
+  let progreso = 0;
+  let index = 0;
 
-let intervalo = setInterval(function () {
-  progreso += 5;
-  barra.style.width = progreso + "%";
+  let intervalo = setInterval(() => {
+    progreso += 5;
+    barra.style.width = progreso + "%";
 
-  if (index < archivos.length) {
-    log.innerHTML += archivos[index] + "<br>";
-    index++;
-    log.scrollTop = log.scrollHeight;
-  }
+    if (index < archivos.length) {
+      log.innerHTML += archivos[index] + "<br>";
+      index++;
+      log.scrollTop = log.scrollHeight;
+    }
 
-  if (progreso >= 100) {
-    clearInterval(intervalo);
-
-    pantallaCarga.style.display = "none";
-    pantallaAcceso.style.display = "none";
-
-    logoFondo.style.display = "block";
-    contenidoFinal.style.display = "block";
-    discordLink.style.display = "block"; // 👈 APARECE ACÁ
-  }
-}, 350);
+    if (progreso >= 100) {
+      clearInterval(intervalo);
+      pantallaCarga.style.display = "none";
+      logoFondo.style.display = "block";
+      contenidoFinal.style.display = "block";
+      discordLink.style.display = "block";
+    }
+  }, 350);
+}
 </script>
 
 </body>
